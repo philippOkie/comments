@@ -1,5 +1,5 @@
-import React from "react";
 import "./Comment.css";
+import PropTypes from "prop-types";
 
 const Comment = ({ username, date, text, avatar, replies }) => {
   return (
@@ -31,6 +31,25 @@ const Comment = ({ username, date, text, avatar, replies }) => {
       </div>
     </div>
   );
+};
+
+Comment.propTypes = {
+  username: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
+  replies: PropTypes.arrayOf(
+    PropTypes.shape({
+      username: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      avatar: PropTypes.string.isRequired,
+    })
+  ),
+};
+
+Comment.defaultProps = {
+  replies: [],
 };
 
 export default Comment;

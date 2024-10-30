@@ -1,7 +1,5 @@
-import React from "react";
-
-import Comment from "./Comment";
-import CommentForm from "./CommentForm";
+import Comment from "./components/Comment";
+import CommentForm from "./components/CommentForm";
 
 import "./App.css";
 
