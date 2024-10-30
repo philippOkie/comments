@@ -1,5 +1,7 @@
 import React from "react";
+
 import Comment from "./Comment";
+import CommentForm from "./CommentForm";
 
 const commentsData = [
   {
@@ -49,6 +51,8 @@ const App = () => (
     {commentsData.map((comment, index) => (
       <Comment key={index} {...comment} />
     ))}
+
+    <CommentForm></CommentForm>
   </div>
 );
 
