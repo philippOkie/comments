@@ -11,5 +11,5 @@ async function insertUsername(username) {
 
 module.exports = {
   getAllUsernames,
-  insertUsername
+  insertUsername,
 };
