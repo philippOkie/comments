@@ -10,5 +10,5 @@ Content-Type: application/json
     "date": "2024-10-22T22:30:00Z",
     "likes": 100,
     "dislikes": 1000,
-    "userId": 1
+    "userId": "ad84fb6d-b8ad-4139-ac92-76d832bcb531"
 }

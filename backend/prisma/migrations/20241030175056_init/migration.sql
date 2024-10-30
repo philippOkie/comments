@@ -1,42 +1,43 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "username" VARCHAR(32) NOT NULL,
     "email" VARCHAR(256) NOT NULL,
     "passwordHash" VARCHAR(256) NOT NULL,
+    "profile_image" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Comment" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
     "commentText" TEXT NOT NULL,
     "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "likes" INTEGER NOT NULL DEFAULT 0,
     "dislikes" INTEGER NOT NULL DEFAULT 0,
-    "parentId" INTEGER,
+    "parentId" UUID,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "File" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "filePath" VARCHAR(512) NOT NULL,
     "size" INTEGER NOT NULL,
-    "commentId" INTEGER NOT NULL,
+    "commentId" UUID NOT NULL,
 
     CONSTRAINT "File_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Image" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "filePath" VARCHAR(512) NOT NULL,
     "size" INTEGER NOT NULL,
-    "commentId" INTEGER NOT NULL,
+    "commentId" UUID NOT NULL,
 
     CONSTRAINT "Image_pkey" PRIMARY KEY ("id")
 );
