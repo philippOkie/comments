@@ -14,4 +14,25 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const { commentText, date, likes, dislikes, userId, parentId } = req.body;
+
+    const comment = await prisma.comment.create({
+      data: {
+        commentText,
+        date: new Date(date),
+        likes,
+        dislikes,
+        userId,
+      },
+    });
+
+    res.json({ comment });
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
