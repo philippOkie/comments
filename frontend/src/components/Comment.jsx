@@ -16,9 +16,8 @@ const Comment = ({ username, date, text, avatar, replies }) => {
 
         <div className="comment-actions">
           <span className="user-can-click">💬</span>
-          <span className="user-can-click">🔗</span>
-          <span className="user-can-click">👍 0</span>
-          <span className="user-can-click">👎 0</span>
+          <span className="user-can-click">👍</span>
+          <span className="user-can-click">👎</span>
         </div>
 
         {replies && (
