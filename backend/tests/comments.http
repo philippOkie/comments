@@ -1,0 +1,14 @@
+### Get all comments
+GET http://localhost:3000/comments
+
+### Post a comment
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+{
+    "commentText": "TEST",
+    "date": "2024-10-22T22:30:00Z",
+    "likes": 100,
+    "dislikes": 1000,
+    "userId": 1
+}
