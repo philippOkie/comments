@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// npx prisma migrate dev --name init
+// npx prisma generate
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique @db.VarChar(32)
+  email        String    @unique @db.VarChar(256)
+  passwordHash String    @db.VarChar(256)
+  comments     Comment[] // Relation to Comments (one-to-many)
+}
+
+// Comment model
+model Comment {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  commentText String    @db.Text
+  date        DateTime? @default(now())
+  likes       Int       @default(0)
+  dislikes    Int       @default(0)
+
+  // Self-referencing relation for replies
+  parentId Int? // Optional field to allow top-level comments
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+
+  // Relations to Files and Images (one-to-many)
+  files  File[]
+  images Image[]
+}
+
+// File model
+model File {
+  id        Int     @id @default(autoincrement())
+  filePath  String  @db.VarChar(512)
+  size      Int
+  comment   Comment @relation(fields: [commentId], references: [id])
+  commentId Int
+}
+
+// Image model
+model Image {
+  id        Int     @id @default(autoincrement())
+  filePath  String  @db.VarChar(512)
+  size      Int
+  comment   Comment @relation(fields: [commentId], references: [id])
+  commentId Int
+}
