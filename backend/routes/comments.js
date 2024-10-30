@@ -1,9 +1,53 @@
 const express = require("express");
 const router = express.Router();
+
 require("dotenv").config();
+const Joi = require("joi");
 
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+
+const commentSchema = Joi.object({
+  commentText: Joi.string().min(1).max(500).required(),
+  date: Joi.date().iso(),
+  likes: Joi.number().integer().min(0),
+  dislikes: Joi.number().integer().min(0),
+  userId: Joi.string().uuid().required(),
+  parentId: Joi.string().uuid().allow(null),
+  captchaToken: Joi.string().required(), // CAPTCHA token from client
+});
+
+// Middleware for validating input
+const validateComment = async (req, res, next) => {
+  try {
+    await commentSchema.validateAsync(req.body);
+
+    // Verify CAPTCHA
+    const isCaptchaValid = await verifyCaptcha(req.body.captchaToken);
+    if (!isCaptchaValid) {
+      return res.status(400).json({ error: "Invalid CAPTCHA" });
+    }
+
+    next();
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ error: error.details?.[0].message || "Invalid input" });
+  }
+};
+
+const verifyCaptcha = async (captchaToken) => {
+  const secretKey = process.env.CAPTCHA_SECRET_KEY;
+  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
+
+  try {
+    const response = await axios.post(url);
+    return response.data.success;
+  } catch (error) {
+    console.error("CAPTCHA verification failed:", error);
+    return false;
+  }
+};
 
 router.get("/", async (req, res) => {
   try {
@@ -19,7 +63,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateComment, async (req, res) => {
   try {
     const { commentText, date, likes, dislikes, userId, parentId } = req.body;
 
