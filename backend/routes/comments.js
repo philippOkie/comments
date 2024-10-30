@@ -7,7 +7,11 @@ const prisma = new PrismaClient();
 
 router.get("/", async (req, res) => {
   try {
-    const comments = await prisma.comment.findMany();
+    const comments = await prisma.comment.findMany({
+      where: {
+        parentId: null,
+      },
+    });
     res.json({ comments });
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -37,7 +41,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id/replies", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const parentId = parseInt(req.params.id);
 
