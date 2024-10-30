@@ -26,12 +26,28 @@ router.post("/", async (req, res) => {
         likes,
         dislikes,
         userId,
+        parentId: parentId || null,
       },
     });
 
     res.json({ comment });
   } catch (error) {
     console.error("Error creating comment:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/:id/replies", async (req, res) => {
+  try {
+    const parentId = parseInt(req.params.id);
+
+    const replies = await prisma.comment.findMany({
+      where: { parentId },
+    });
+
+    res.json({ replies });
+  } catch (error) {
+    console.error("Error fetching replies:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

@@ -1,7 +1,7 @@
 ### Get all comments
 GET http://localhost:3000/comments
 
-### Post a comment
+### Post a comment (use id from your database)
 POST http://localhost:3000/comments
 Content-Type: application/json
 
@@ -12,3 +12,19 @@ Content-Type: application/json
     "dislikes": 1000,
     "userId": "ad84fb6d-b8ad-4139-ac92-76d832bcb531"
 }
+
+### Post a comment with a parent id (use id from your database)
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+{
+    "commentText": "TEST",
+    "date": "2024-10-22T22:30:00Z",
+    "likes": 100,
+    "dislikes": 1000,
+    "userId": "ad84fb6d-b8ad-4139-ac92-76d832bcb531",
+    "parentId": "0f893bac-627c-43f7-b55e-ee074e1d32f9"
+}
+
+### Get replies of a comment (use id from your database)
+GET http://localhost:3000/comments/:0f893bac-627c-43f7-b55e-ee074e1d32f9/replies
