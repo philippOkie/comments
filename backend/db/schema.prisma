@@ -22,7 +22,7 @@ model User {
   username     String    @unique @db.VarChar(32)
   email        String    @unique @db.VarChar(256)
   passwordHash String    @db.VarChar(256)
-  comments     Comment[] // Relation to Comments (one-to-many)
+  comments     Comment[] 
 }
 
 // Comment model
@@ -36,11 +36,10 @@ model Comment {
   dislikes    Int       @default(0)
 
   // Self-referencing relation for replies
-  parentId Int? // Optional field to allow top-level comments
+  parentId Int? 
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies  Comment[] @relation("CommentReplies")
 
-  // Relations to Files and Images (one-to-many)
   files  File[]
   images Image[]
 }
