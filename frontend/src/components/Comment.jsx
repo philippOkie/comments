@@ -1,5 +1,5 @@
 import "./Comment.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 
 import CommentForm from "./CommentForm";
@@ -50,9 +50,9 @@ const Comment = ({
   };
 
   const handleCommentSubmit = (newComment) => {
-    console.log("New comment submitted:", newComment);
-
     setShowCommentForm(false);
+
+    console.log("New comment submitted:", newComment);
   };
 
   return (

@@ -1,11 +1,13 @@
 import "./CommentForm.css";
+
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 import ReCAPTCHA from "react-google-recaptcha";
 
 const CAPTCHA_SITE_KEY = import.meta.env.VITE_REACT_CAPTCHA_SITE_KEY;
 
-const CommentForm = () => {
+const CommentForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     userName: "",
     email: "",
@@ -28,7 +30,7 @@ const CommentForm = () => {
       return;
     }
 
-    console.log("Submitted data:", formData);
+    onSubmit(formData);
   };
 
   const onCaptchaChange = (token) => {
@@ -83,6 +85,10 @@ const CommentForm = () => {
       </div>
     </form>
   );
+};
+
+CommentForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default CommentForm;
