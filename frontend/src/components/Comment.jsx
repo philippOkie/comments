@@ -1,6 +1,6 @@
 import "./Comment.css";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 import CommentForm from "./CommentForm";
