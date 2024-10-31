@@ -1,8 +1,13 @@
 import "./Comment.css";
+
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
+
 import CommentForm from "./CommentForm";
 import commentService from "../services/comments";
+
+const DEFAULT_IMAGE =
+  "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3408.jpg?w=1800";
 
 const Comment = ({
   user,
@@ -20,7 +25,11 @@ const Comment = ({
   const formRef = useRef(null);
 
   const fetchReplies = async () => {
-    if (showReplies || loading) return;
+    if (showReplies) {
+      setShowReplies(false);
+      return;
+    }
+    if (loading) return;
 
     setLoading(true);
     try {
@@ -29,6 +38,7 @@ const Comment = ({
 
       if (response.replies) {
         setFetchedReplies(response.replies);
+        setShowReplies(true);
       } else {
         throw new Error("No replies found");
       }
@@ -37,7 +47,6 @@ const Comment = ({
     } finally {
       setLoading(false);
     }
-    setShowReplies((prev) => !prev);
   };
 
   const handleFormState = () => {
@@ -93,7 +102,7 @@ const Comment = ({
                   <Comment
                     user={{
                       username: reply.user.username || reply.user,
-                      profileImage: reply.user.profileImage || "",
+                      profileImage: reply.user.profileImage || DEFAULT_IMAGE,
                     }}
                     date={reply.date}
                     commentText={reply.commentText}
