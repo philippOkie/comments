@@ -1,5 +1,6 @@
 var createError = require("http-errors");
 var express = require("express");
+const cors = require("cors");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -11,6 +12,8 @@ var commentsRouter = require("./routes/comments");
 
 var app = express();
 
+app.use(cors());
+
 app.use(logger("dev"));
 app.use(helmet());
 app.use(express.json());
@@ -19,8 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/comments", commentsRouter);
+app.use("/api/comments", commentsRouter);
+// app.use("/users", usersRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

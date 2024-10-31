@@ -71,6 +71,12 @@ router.get("/", async (req, res) => {
         dislikes: true,
         parentId: true,
         hasReplies: true,
+        user: {
+          select: {
+            profile_image: true,
+            username: true,
+          },
+        },
       },
     });
     res.json({ comments });
