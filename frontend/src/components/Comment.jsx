@@ -78,7 +78,6 @@ const Comment = ({
         <div className="comment-actions">
           <span className="user-can-click">👍</span>
           <span className="user-can-click">👎</span>
-
           <button className="leave-comment-btn" onClick={handleFormState}>
             💬
           </button>
