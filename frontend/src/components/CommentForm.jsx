@@ -1,13 +1,16 @@
+import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import "./CommentForm.css";
+
+const CAPTCHA_SITE_KEY = "6LfM2HAqAAAAAOkUMmvxxC1UoH2fQVvYSfLAcW6CC";
 
 const CommentForm = () => {
   const [formData, setFormData] = useState({
     userName: "",
     email: "",
     homePage: "",
-    captcha: "",
     text: "",
+    captchaToken: "",
   });
 
   const handleChange = (event) => {
@@ -19,8 +22,31 @@ const CommentForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Logic to send data to the server or process it
+    if (!formData.captchaToken) {
+      alert("Please verify that you are a human!");
+      return;
+    }
+
     console.log("Submitted data:", formData);
+
+    // fetch("/api/submit-comment", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(formData),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("Response from server:", data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error submitting form:", error);
+    //   });
+  };
+
+  const onCaptchaChange = (token) => {
+    setFormData({ ...formData, captchaToken: token });
   };
 
   return (
@@ -35,7 +61,6 @@ const CommentForm = () => {
           required
         />
       </label>
-
       <label>
         E-mail:
         <input
@@ -46,7 +71,6 @@ const CommentForm = () => {
           required
         />
       </label>
-
       <label>
         Home page:
         <input
@@ -56,19 +80,6 @@ const CommentForm = () => {
           onChange={handleChange}
         />
       </label>
-
-      <label>
-        CAPTCHA:
-        <img src="/captcha.jpg" alt="CAPTCHA" />
-        <input
-          type="text"
-          name="captcha"
-          value={formData.captcha}
-          onChange={handleChange}
-          required
-        />
-      </label>
-
       <label>
         Text:
         <textarea
@@ -78,8 +89,12 @@ const CommentForm = () => {
           required
         />
       </label>
-
-      <button type="submit">Submit</button>
+      <div className="captcha-btn-container">
+        <button className="submit-btn" type="submit">
+          Submit
+        </button>
+        <ReCAPTCHA sitekey={CAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
+      </div>
     </form>
   );
 };

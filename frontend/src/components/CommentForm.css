@@ -64,3 +64,15 @@
   outline: 2px solid #80bdff;
   outline-offset: 2px;
 }
+
+.captcha-btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.submit-btn {
+  height: 60px;
+  width: 200px;
+  font-size: 18px;
+}

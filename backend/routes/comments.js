@@ -2,10 +2,19 @@ const express = require("express");
 const router = express.Router();
 
 require("dotenv").config();
+
 const Joi = require("joi");
+const axios = require("axios");
 
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+
+const secretKey = process.env.CAPTCHA_SECRET_KEY;
+if (!secretKey) {
+  return res
+    .status(500)
+    .json({ error: "Internal server error: missing secret key" });
+}
 
 const commentSchema = Joi.object({
   commentText: Joi.string().min(1).max(500).required(),
@@ -37,7 +46,6 @@ const validateComment = async (req, res, next) => {
 };
 
 const verifyCaptcha = async (captchaToken) => {
-  const secretKey = process.env.CAPTCHA_SECRET_KEY;
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
 
   try {
