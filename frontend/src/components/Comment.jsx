@@ -61,11 +61,19 @@ const Comment = ({
 
       <div className="comment-content">
         <div className="comment-header">
-          <span className="username">{username}</span>
-          <span className="date">{date}</span>
+          <div className="sub-container">
+            <span className="username">{username}</span>
+            <span className="date">{date}</span>
+          </div>
+
+          {hasReplies && (
+            <button onClick={toggleReplies} className="show-replies-btn">
+              {loading ? "Loading..." : showReplies ? "⬆️" : "⬇️"}
+            </button>
+          )}
         </div>
 
-        <p className="comment-text">{text}</p>
+        <div className="comment-text">{text}</div>
 
         <div className="comment-actions">
           <span className="user-can-click">👍</span>
@@ -74,12 +82,6 @@ const Comment = ({
           <button className="leave-comment-btn" onClick={handleFormState}>
             💬
           </button>
-
-          {hasReplies && (
-            <button onClick={toggleReplies} className="show-replies-btn">
-              {loading ? "Loading..." : showReplies ? "⬆️" : "⬇️"}
-            </button>
-          )}
         </div>
 
         {showCommentForm === true && (

@@ -32,6 +32,7 @@
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .username {
@@ -46,14 +47,13 @@
 }
 
 .comment-text {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   line-height: 1.5;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .comment-actions {
   gap: 12px;
-  color: #757575;
   font-size: 0.9em;
 
   display: flex;
@@ -73,7 +73,7 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 20px;
   transition: transform 0.1s;
 }
 
