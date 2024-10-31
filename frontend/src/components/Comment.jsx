@@ -10,7 +10,7 @@ const DEFAULT_IMAGE =
   "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3408.jpg?w=1800";
 
 const Comment = ({
-  user,
+  user: { username, profileImage = DEFAULT_IMAGE },
   date,
   commentText,
   hasReplies = false,
@@ -19,25 +19,22 @@ const Comment = ({
   dislikes = 0,
 }) => {
   const [showReplies, setShowReplies] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [fetchedReplies, setFetchedReplies] = useState([]);
+  const [loadingReplies, setLoadingReplies] = useState(false);
+  const [replies, setReplies] = useState([]);
   const [showCommentForm, setShowCommentForm] = useState(false);
-  const formRef = useRef(null);
 
   const fetchReplies = async () => {
     if (showReplies) {
       setShowReplies(false);
       return;
     }
-    if (loading) return;
 
-    setLoading(true);
+    setLoadingReplies(true);
     try {
-      console.log("Fetching replies for comment ID:", id);
       const response = await commentService.getCommentReplies(id);
 
       if (response.replies) {
-        setFetchedReplies(response.replies);
+        setReplies(response.replies);
         setShowReplies(true);
       } else {
         throw new Error("No replies found");
@@ -45,32 +42,31 @@ const Comment = ({
     } catch (error) {
       console.error("Error fetching replies:", error);
     } finally {
-      setLoading(false);
+      setLoadingReplies(false);
     }
   };
 
-  const handleFormState = () => {
+  const handleCommentFormState = () => {
     setShowCommentForm((prevState) => !prevState);
   };
 
-  const handleCommentSubmit = (newComment) => {
+  const handleNewComment = (newComment) => {
     setShowCommentForm(false);
-    console.log("New comment submitted:", newComment);
-    setFetchedReplies((prev) => [...prev, newComment]);
+    setReplies((prev) => [...prev, newComment]);
   };
 
   return (
     <div className="comment">
-      <img src={user.profileImage} alt="Avatar" className="avatar" />
+      <img src={profileImage} alt="Avatar" className="avatar" />
       <div className="comment-content">
         <div className="comment-header">
           <div className="sub-container">
-            <span className="username">{user.username}</span>
+            <span className="username">{username}</span>
             <span className="date">{new Date(date).toLocaleString()}</span>
           </div>
           {hasReplies && (
             <button onClick={fetchReplies} className="show-replies-btn">
-              {loading ? "Loading..." : showReplies ? "⬆️" : "⬇️"}
+              {loadingReplies ? "Loading..." : showReplies ? "⬆️" : "⬇️"}
             </button>
           )}
         </div>
@@ -81,35 +77,38 @@ const Comment = ({
           <span className="user-can-click">👍 {likes}</span>
           <span className="user-can-click">👎 {dislikes}</span>
 
-          <button className="leave-comment-btn" onClick={handleFormState}>
+          <button
+            className="leave-comment-btn"
+            onClick={handleCommentFormState}
+          >
             💬
           </button>
         </div>
 
         {showCommentForm && (
-          <div ref={formRef}>
-            <CommentForm onSubmit={handleCommentSubmit} />
+          <div>
+            <CommentForm onSubmit={handleNewComment} />
           </div>
         )}
 
         {showReplies && (
           <div className="replies">
-            {loading ? (
+            {loadingReplies ? (
               <p>Loading replies...</p>
             ) : (
-              fetchedReplies.map((reply) => (
+              replies.map((reply) => (
                 <div key={reply.id} className="reply">
                   <Comment
                     user={{
-                      username: reply.user.username || reply.user,
-                      profileImage: reply.user.profileImage || DEFAULT_IMAGE,
+                      username: reply.user.username,
+                      profileImage: reply.user.profileImage,
                     }}
                     date={reply.date}
                     commentText={reply.commentText}
                     hasReplies={reply.hasReplies}
                     id={reply.id}
-                    likes={reply.likes || 0}
-                    dislikes={reply.dislikes || 0}
+                    likes={reply.likes}
+                    dislikes={reply.dislikes}
                   />
                 </div>
               ))
