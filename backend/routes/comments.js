@@ -63,6 +63,15 @@ router.get("/", async (req, res) => {
       where: {
         parentId: null,
       },
+      select: {
+        id: true,
+        commentText: true,
+        date: true,
+        likes: true,
+        dislikes: true,
+        parentId: true,
+        hasReplies: true,
+      },
     });
     res.json({ comments });
   } catch (error) {
