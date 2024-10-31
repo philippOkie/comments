@@ -22,7 +22,7 @@ model User {
   username      String    @unique @db.VarChar(32)
   email         String    @unique @db.VarChar(256)
   passwordHash  String    @db.VarChar(256)
-  profile_image String?
+  profileImage String?
   comments      Comment[]
 }
 

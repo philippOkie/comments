@@ -73,7 +73,7 @@ router.get("/", async (req, res) => {
         hasReplies: true,
         user: {
           select: {
-            profile_image: true,
+            profileImage: true,
             username: true,
           },
         },
