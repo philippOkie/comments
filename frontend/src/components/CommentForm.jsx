@@ -1,8 +1,8 @@
-import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import "./CommentForm.css";
+import ReCAPTCHA from "react-google-recaptcha";
 
-const CAPTCHA_SITE_KEY = "6LfM2HAqAAAAAOkUMmvxxC1UoH2fQVvYSfLAcW6CC";
+const CAPTCHA_SITE_KEY = import.meta.env.VITE_REACT_CAPTCHA_SITE_KEY;
 
 const CommentForm = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +10,7 @@ const CommentForm = () => {
     email: "",
     homePage: "",
     text: "",
-    captchaToken: "",
+    captchaToken: null,
   });
 
   const handleChange = (event) => {
