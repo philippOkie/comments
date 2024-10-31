@@ -6,8 +6,9 @@
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
   transition: box-shadow 0.3s;
+
+  display: flex;
 }
 .comment:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -27,6 +28,7 @@
 
 .comment-header {
   margin-bottom: 8px;
+
   display: flex;
   align-items: center;
 }
@@ -45,12 +47,14 @@
 .comment-text {
   margin-bottom: 8px;
   line-height: 1.5;
+  font-size: 18px;
 }
 
 .comment-actions {
   gap: 12px;
   color: #757575;
   font-size: 0.9em;
+
   display: flex;
 }
 
@@ -63,9 +67,11 @@
 
 .user-can-click,
 .show-replies-btn {
+  padding: 0;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  font-size: 18px;
   transition: transform 0.1s;
 }
 

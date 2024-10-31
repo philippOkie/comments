@@ -8,6 +8,10 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 20px auto;
   max-width: 600px;
+  transition: box-shadow 0.3s;
+}
+.comment-form:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .comment-form label {
@@ -20,6 +24,7 @@
 .comment-form input,
 .comment-form textarea {
   width: 100%;
+  margin-top: 10px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   margin-bottom: 12px;
