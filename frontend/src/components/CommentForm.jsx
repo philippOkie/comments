@@ -49,6 +49,7 @@ const CommentForm = ({ onSubmit }) => {
           required
         />
       </label>
+
       <label>
         E-mail:
         <input
@@ -59,6 +60,7 @@ const CommentForm = ({ onSubmit }) => {
           required
         />
       </label>
+
       <label>
         Home page:
         <input
@@ -68,6 +70,7 @@ const CommentForm = ({ onSubmit }) => {
           onChange={handleChange}
         />
       </label>
+
       <label>
         Text:
         <textarea
@@ -77,10 +80,12 @@ const CommentForm = ({ onSubmit }) => {
           required
         />
       </label>
+
       <div className="captcha-btn-container">
         <button className="submit-btn" type="submit">
           Submit
         </button>
+
         <ReCAPTCHA sitekey={CAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
       </div>
     </form>
