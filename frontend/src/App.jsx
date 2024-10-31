@@ -13,7 +13,6 @@ const App = () => {
       try {
         const response = await commentService.getAllComments();
         const fetchedComments = response.comments;
-        console.log("Fetched Comments:", fetchedComments);
 
         if (!Array.isArray(fetchedComments)) {
           throw new Error("Fetched comments are not an array");

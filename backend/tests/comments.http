@@ -5,7 +5,7 @@ GET http://localhost:3000/api/comments
 ### Get replies of a comment (use id from your database)
 GET http://localhost:3000/api/comments/:0f893bac-627c-43f7-b55e-ee074e1d32f9
 
-### Post a comment (use id from your database)
+### Post a comment 
 POST http://localhost:3000/api/comments
 Content-Type: application/json
 
@@ -14,7 +14,6 @@ Content-Type: application/json
     "date": "2024-10-22T22:30:00Z",
     "likes": 100,
     "dislikes": 1000,
-    "userId": "ad84fb6d-b8ad-4139-ac92-76d832bcb531"
 }
 
 ### Post a comment with a parent id (use id from your database)

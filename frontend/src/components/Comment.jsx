@@ -50,9 +50,21 @@ const Comment = ({
     setShowCommentForm((prevState) => !prevState);
   };
 
-  const handleNewComment = (newComment) => {
-    setShowCommentForm(false);
-    setReplies((prev) => [...prev, newComment]);
+  const handleNewComment = async (newComment) => {
+    const comment = {
+      ...newComment,
+      date: new Date().toISOString(),
+      parentId: id,
+    };
+
+    console.log("Creating Comment:", comment);
+
+    const savedComment = await commentService.postComment(comment);
+
+    if (savedComment) {
+      setShowCommentForm(false);
+      fetchReplies();
+    }
   };
 
   return (
@@ -64,6 +76,7 @@ const Comment = ({
             <span className="username">{username}</span>
             <span className="date">{new Date(date).toLocaleString()}</span>
           </div>
+
           {hasReplies && (
             <button onClick={fetchReplies} className="show-replies-btn">
               {loadingReplies ? "Loading..." : showReplies ? "⬆️" : "⬇️"}

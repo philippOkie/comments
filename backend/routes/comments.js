@@ -90,12 +90,11 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { commentText, date, likes, dislikes, parentId, email, username } =
-      req.body;
+    const { text, date, parentId, email, userName } = req.body;
 
     const user = await prisma.user.findFirst({
       where: {
-        AND: [{ email }, { username }],
+        AND: [{ email }, { username: userName }],
       },
     });
 
@@ -107,12 +106,12 @@ router.post("/", async (req, res) => {
 
     const comment = await prisma.comment.create({
       data: {
-        commentText,
+        commentText: text,
         date: new Date(date),
-        likes,
-        dislikes,
+        likes: 0,
+        dislikes: 0,
         userId,
-        parentId,
+        parentId: parentId || null,
       },
     });
 
