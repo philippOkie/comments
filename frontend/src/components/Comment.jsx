@@ -1,15 +1,12 @@
 import "./Comment.css";
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
-
 import CommentForm from "./CommentForm";
 
 const Comment = ({
-  username,
+  user,
   date,
-  text,
-  avatar,
-  replies = [],
+  commentText,
   hasReplies = false,
   commentId,
 }) => {
@@ -42,30 +39,23 @@ const Comment = ({
   };
 
   const handleFormState = () => {
-    if (showCommentForm) {
-      setShowCommentForm(false);
-    } else {
-      setShowCommentForm(true);
-    }
+    setShowCommentForm((prevState) => !prevState);
   };
 
   const handleCommentSubmit = (newComment) => {
     setShowCommentForm(false);
-
     console.log("New comment submitted:", newComment);
   };
 
   return (
     <div className="comment">
-      <img src={avatar} alt="Avatar" className="avatar" />
-
+      <img src={user.profileImage} alt="Avatar" className="avatar" />
       <div className="comment-content">
         <div className="comment-header">
           <div className="sub-container">
-            <span className="username">{username}</span>
+            <span className="username">{user.username}</span>
             <span className="date">{date}</span>
           </div>
-
           {hasReplies && (
             <button onClick={toggleReplies} className="show-replies-btn">
               {loading ? "Loading..." : showReplies ? "⬆️" : "⬇️"}
@@ -73,7 +63,7 @@ const Comment = ({
           )}
         </div>
 
-        <div className="comment-text">{text}</div>
+        <div className="comment-text">{commentText}</div>
 
         <div className="comment-actions">
           <span className="user-can-click">👍</span>
@@ -83,7 +73,7 @@ const Comment = ({
           </button>
         </div>
 
-        {showCommentForm === true && (
+        {showCommentForm && (
           <div ref={formRef}>
             <CommentForm onSubmit={handleCommentSubmit} />
           </div>
@@ -94,7 +84,9 @@ const Comment = ({
             {loading ? (
               <p>Loading replies...</p>
             ) : (
-              replies.map((reply, index) => <Comment key={index} {...reply} />)
+              fetchedReplies.map((reply, index) => (
+                <Comment key={index} {...reply} />
+              ))
             )}
           </div>
         )}
@@ -104,10 +96,12 @@ const Comment = ({
 };
 
 Comment.propTypes = {
-  username: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    profileImage: PropTypes.string.isRequired,
+  }).isRequired,
   date: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  avatar: PropTypes.string.isRequired,
+  commentText: PropTypes.string.isRequired,
   replies: PropTypes.array,
   hasReplies: PropTypes.bool,
   commentId: PropTypes.string.isRequired,

@@ -1,369 +1,44 @@
 import "./App.css";
 
+import { useState, useEffect } from "react";
+
 import Comment from "./components/Comment";
+import commentService from "./services/comments";
 
-const comments = [
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  {
-    username: "Antony",
-    date: "22.05.22 at 22:30",
-    text: "I think, therefore I am",
-    avatar:
-      "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
-    hasReplies: true, // Added flag
-    replies: [
-      {
-        username: "Rum_8",
-        date: "22.05.22 at 22:43",
-        text: "you know nun",
-        avatar:
-          "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
-        hasReplies: false, // No replies for this reply
-      },
-      {
-        username: "master_of_none",
-        date: "22.05.22 at 22:47",
-        text: "doobie doobie doo",
-        avatar:
-          "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
-        hasReplies: true, // Added flag
-        replies: [
-          {
-            username: "party_maker_228",
-            date: "22.05.22 at 22:53",
-            text: "woobie wabi boo",
-            avatar:
-              "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
-            hasReplies: false, // No replies for this reply
-          },
-          {
-            username: "mrBoombastic",
-            date: "22.05.22 at 23:43",
-            text: "hell yeaaaa",
-            avatar:
-              "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
-            hasReplies: false, // No replies for this reply
-          },
-        ],
-      },
-    ],
-  },
-  // Add more dummy data if needed
-];
+const App = () => {
+  const [comments, setComments] = useState([]);
 
-const App = () => (
-  <div className="app">
-    {comments.map((comment, index) => (
-      <Comment key={index} {...comment} />
-    ))}
-  </div>
-);
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await commentService.getAllComments();
+        const fetchedComments = response.comments;
+        console.log("Fetched Comments:", fetchedComments);
+
+        if (!Array.isArray(fetchedComments)) {
+          throw new Error("Fetched comments are not an array");
+        }
+
+        setComments(
+          fetchedComments.sort((a, b) =>
+            a.likes < b.likes ? 1 : b.likes < a.likes ? -1 : 0
+          )
+        );
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, []);
+
+  return (
+    <div className="app">
+      {comments.map((comment, index) => (
+        <Comment key={index} {...comment} />
+      ))}
+    </div>
+  );
+};
 
 export default App;
