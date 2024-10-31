@@ -9,6 +9,9 @@ require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const uuidRegex =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
 const secretKey = process.env.CAPTCHA_SECRET_KEY;
 if (!secretKey) {
   return res
@@ -26,22 +29,21 @@ const commentSchema = Joi.object({
   captchaToken: Joi.string().required(), // CAPTCHA token from client
 });
 
-// Middleware for validating input
 const validateComment = async (req, res, next) => {
   try {
-    await commentSchema.validateAsync(req.body);
+    await commentSchema.validateAsync(req.body, { abortEarly: false });
 
-    // Verify CAPTCHA
-    const isCaptchaValid = await verifyCaptcha(req.body.captchaToken);
-    if (!isCaptchaValid) {
+    const captchaToken = req.body.captchaToken;
+    const isValid = await verifyCaptcha(captchaToken);
+
+    if (!isValid) {
       return res.status(400).json({ error: "Invalid CAPTCHA" });
     }
 
     next();
   } catch (error) {
-    return res
-      .status(400)
-      .json({ error: error.details?.[0].message || "Invalid input" });
+    const errorMessage = error.details?.[0].message || "Invalid input";
+    return res.status(400).json({ error: errorMessage });
   }
 };
 
@@ -132,10 +134,31 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const parentId = parseInt(req.params.id);
+    const parentId = req.params.id;
+
+    if (!parentId || parentId === "null" || !uuidRegex.test(parentId)) {
+      return res.status(400).json({ error: "Invalid parentId" });
+    }
 
     const replies = await prisma.comment.findMany({
-      where: { parentId },
+      where: {
+        parentId: parentId,
+      },
+      select: {
+        id: true,
+        commentText: true,
+        date: true,
+        likes: true,
+        dislikes: true,
+        parentId: true,
+        hasReplies: true,
+        user: {
+          select: {
+            profileImage: true,
+            username: true,
+          },
+        },
+      },
     });
 
     res.json({ replies });

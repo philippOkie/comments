@@ -2,13 +2,16 @@ import "./Comment.css";
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import CommentForm from "./CommentForm";
+import commentService from "../services/comments";
 
 const Comment = ({
   user,
   date,
   commentText,
   hasReplies = false,
-  commentId,
+  id,
+  likes = 0,
+  dislikes = 0,
 }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -16,26 +19,25 @@ const Comment = ({
   const [showCommentForm, setShowCommentForm] = useState(false);
   const formRef = useRef(null);
 
-  const toggleReplies = async () => {
-    if (showReplies) {
-      setShowReplies(false);
-      return;
-    }
+  const fetchReplies = async () => {
+    if (showReplies || loading) return;
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/comments/${commentId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch replies");
+      console.log("Fetching replies for comment ID:", id);
+      const response = await commentService.getCommentReplies(id);
+
+      if (response.replies) {
+        setFetchedReplies(response.replies);
+      } else {
+        throw new Error("No replies found");
       }
-      const data = await response.json();
-      setFetchedReplies(data.replies);
     } catch (error) {
       console.error("Error fetching replies:", error);
     } finally {
       setLoading(false);
-      setShowReplies(true);
     }
+    setShowReplies((prev) => !prev);
   };
 
   const handleFormState = () => {
@@ -45,6 +47,7 @@ const Comment = ({
   const handleCommentSubmit = (newComment) => {
     setShowCommentForm(false);
     console.log("New comment submitted:", newComment);
+    setFetchedReplies((prev) => [...prev, newComment]);
   };
 
   return (
@@ -54,10 +57,10 @@ const Comment = ({
         <div className="comment-header">
           <div className="sub-container">
             <span className="username">{user.username}</span>
-            <span className="date">{date}</span>
+            <span className="date">{new Date(date).toLocaleString()}</span>
           </div>
           {hasReplies && (
-            <button onClick={toggleReplies} className="show-replies-btn">
+            <button onClick={fetchReplies} className="show-replies-btn">
               {loading ? "Loading..." : showReplies ? "⬆️" : "⬇️"}
             </button>
           )}
@@ -66,8 +69,9 @@ const Comment = ({
         <div className="comment-text">{commentText}</div>
 
         <div className="comment-actions">
-          <span className="user-can-click">👍</span>
-          <span className="user-can-click">👎</span>
+          <span className="user-can-click">👍 {likes}</span>
+          <span className="user-can-click">👎 {dislikes}</span>
+
           <button className="leave-comment-btn" onClick={handleFormState}>
             💬
           </button>
@@ -84,8 +88,21 @@ const Comment = ({
             {loading ? (
               <p>Loading replies...</p>
             ) : (
-              fetchedReplies.map((reply, index) => (
-                <Comment key={index} {...reply} />
+              fetchedReplies.map((reply) => (
+                <div key={reply.id} className="reply">
+                  <Comment
+                    user={{
+                      username: reply.user.username || reply.user,
+                      profileImage: reply.user.profileImage || "",
+                    }}
+                    date={reply.date}
+                    commentText={reply.commentText}
+                    hasReplies={reply.hasReplies}
+                    id={reply.id}
+                    likes={reply.likes || 0}
+                    dislikes={reply.dislikes || 0}
+                  />
+                </div>
               ))
             )}
           </div>
@@ -102,9 +119,10 @@ Comment.propTypes = {
   }).isRequired,
   date: PropTypes.string.isRequired,
   commentText: PropTypes.string.isRequired,
-  replies: PropTypes.array,
   hasReplies: PropTypes.bool,
-  commentId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  likes: PropTypes.number,
+  dislikes: PropTypes.number,
 };
 
 export default Comment;

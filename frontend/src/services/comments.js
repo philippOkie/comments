@@ -7,4 +7,10 @@ const getAllComments = async () => {
   return response.data;
 };
 
-export default { getAllComments };
+const getCommentReplies = async (id) => {
+  const response = await axios.get(`${BASE_URL}/comments/${id}`);
+
+  return response.data;
+};
+
+export default { getAllComments, getCommentReplies };
