@@ -35,6 +35,7 @@ model Comment {
   date        DateTime? @default(now())
   likes       Int       @default(0)
   dislikes    Int       @default(0)
+  hasReplies  Boolean   @default(false)
 
   // Self-referencing relation for replies
   parentId String?   @db.Uuid

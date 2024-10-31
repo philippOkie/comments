@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-require("dotenv").config();
-
 const Joi = require("joi");
 const axios = require("axios");
+
+require("dotenv").config();
 
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
@@ -71,7 +71,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", validateComment, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { commentText, date, likes, dislikes, userId, parentId } = req.body;
 
@@ -82,9 +82,18 @@ router.post("/", validateComment, async (req, res) => {
         likes,
         dislikes,
         userId,
-        parentId: parentId || null,
+        parentId,
       },
     });
+
+    if (parentId) {
+      await prisma.comment.update({
+        where: { id: parentId },
+        data: {
+          hasReplies: true,
+        },
+      });
+    }
 
     res.json({ comment });
   } catch (error) {
