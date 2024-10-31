@@ -1,18 +1,20 @@
 .app {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(
-    auto-fill,
-    minmax(150px, 1fr)
-  ); /* Adjust the min height as needed */
+  grid-auto-rows: minmax(
+    150px,
+    auto
+  ); /* Minimum height of 150px, allowing growth */
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+  margin: 20px; /* Add some margin around the grid */
 }
 
 .comments-table {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
 }
 
 .comments-table th,
@@ -26,8 +28,27 @@
   background-color: #007bff;
   color: #fff;
   cursor: pointer; /* Indicate that the header is clickable */
+  position: sticky; /* Stick header at the top during scroll */
+  top: 0; /* Required for sticky positioning */
+  z-index: 10; /* Ensure it appears above other content */
 }
 
 .comments-table tr:hover {
   background-color: #f5f5f5; /* Highlight row on hover */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.comments-table td {
+  transition: background-color 0.3s; /* Smooth transition for background changes */
+}
+
+@media (max-width: 600px) {
+  .comments-table {
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  .comments-table th,
+  .comments-table td {
+    padding: 8px; /* Adjust padding for mobile */
+  }
 }

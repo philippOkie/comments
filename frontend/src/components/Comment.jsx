@@ -1,7 +1,14 @@
 import "./Comment.css";
 import PropTypes from "prop-types";
+import { useState } from "react";
 
-const Comment = ({ username, date, text, avatar, replies }) => {
+const Comment = ({ username, date, text, avatar, replies = [] }) => {
+  const [showReplies, setShowReplies] = useState(false);
+
+  const toggleReplies = () => {
+    setShowReplies(!showReplies);
+  };
+
   return (
     <div className="comment">
       <img src={avatar} alt="Avatar" className="avatar" />
@@ -15,16 +22,23 @@ const Comment = ({ username, date, text, avatar, replies }) => {
         <p className="comment-text">{text}</p>
 
         <div className="comment-actions">
-          <span className="user-can-click">💬</span>
           <span className="user-can-click">👍</span>
           <span className="user-can-click">👎</span>
+          <span className="user-can-click">💬</span>
+          <button onClick={toggleReplies} className="show-replies-btn">
+            {showReplies ? "⬆️" : "⬇️"}{" "}
+          </button>
         </div>
 
-        {replies && (
-          <div className="replies">
-            {replies.map((reply, index) => (
-              <Comment key={index} {...reply} />
-            ))}
+        {replies.length > 0 && (
+          <div>
+            {showReplies && (
+              <div className="replies">
+                {replies.map((reply, index) => (
+                  <Comment key={index} {...reply} />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -45,10 +59,6 @@ Comment.propTypes = {
       avatar: PropTypes.string.isRequired,
     })
   ),
-};
-
-Comment.defaultProps = {
-  replies: [],
 };
 
 export default Comment;

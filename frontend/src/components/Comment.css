@@ -6,8 +6,11 @@
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
   display: flex;
+  transition: box-shadow 0.3s;
+}
+.comment:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .avatar {
@@ -58,11 +61,15 @@
   padding-left: 12px;
 }
 
-.user-can-click {
+.user-can-click,
+.show-replies-btn {
+  border: none;
+  background-color: transparent;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: transform 0.1s;
 }
 
-.user-can-click:hover {
-  color: #007bff;
+.user-can-click:hover,
+.show-replies-btn:hover {
+  transform: scale(1.1);
 }
