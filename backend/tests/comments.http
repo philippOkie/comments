@@ -22,10 +22,11 @@ POST http://localhost:3000/comments
 Content-Type: application/json
 
 {
-    "commentText": "TEST",
+    "commentText": "HERE IS A TEST OF A NEW ENDPOINT",
     "date": "2024-10-22T22:30:00Z",
     "likes": 100,
     "dislikes": 1000,
-    "userId": "ad84fb6d-b8ad-4139-ac92-76d832bcb531",
-    "parentId": "0f893bac-627c-43f7-b55e-ee074e1d32f9"
+    "parentId": "0f893bac-627c-43f7-b55e-ee074e1d32f9", 
+    "email": "test_user@test.com",
+    "username": "test_user"
 }

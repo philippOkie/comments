@@ -82,7 +82,20 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { commentText, date, likes, dislikes, userId, parentId } = req.body;
+    const { commentText, date, likes, dislikes, parentId, email, username } =
+      req.body;
+
+    const user = await prisma.user.findFirst({
+      where: {
+        AND: [{ email }, { username }],
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const userId = user.id;
 
     const comment = await prisma.comment.create({
       data: {
