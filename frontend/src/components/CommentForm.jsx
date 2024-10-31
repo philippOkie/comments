@@ -28,21 +28,6 @@ const CommentForm = () => {
     }
 
     console.log("Submitted data:", formData);
-
-    // fetch("/api/submit-comment", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("Response from server:", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error submitting form:", error);
-    //   });
   };
 
   const onCaptchaChange = (token) => {
