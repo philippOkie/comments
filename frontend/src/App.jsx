@@ -1,15 +1,16 @@
+import "./App.css";
+
 import Comment from "./components/Comment";
 import CommentForm from "./components/CommentForm";
 
-import "./App.css";
-
-const commentsData = [
+const comments = [
   {
     username: "Antony",
     date: "22.05.22 at 22:30",
     text: "I think, therefore I am",
     avatar:
       "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
+    hasReplies: true, // Added flag
     replies: [
       {
         username: "Rum_8",
@@ -17,6 +18,7 @@ const commentsData = [
         text: "you know nun",
         avatar:
           "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
+        hasReplies: false, // No replies for this reply
       },
       {
         username: "master_of_none",
@@ -24,6 +26,7 @@ const commentsData = [
         text: "doobie doobie doo",
         avatar:
           "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
+        hasReplies: true, // Added flag
         replies: [
           {
             username: "party_maker_228",
@@ -31,6 +34,7 @@ const commentsData = [
             text: "woobie wabi boo",
             avatar:
               "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
+            hasReplies: false, // No replies for this reply
           },
           {
             username: "mrBoombastic",
@@ -38,6 +42,7 @@ const commentsData = [
             text: "hell yeaaaa",
             avatar:
               "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
+            hasReplies: false, // No replies for this reply
           },
         ],
       },
@@ -49,6 +54,7 @@ const commentsData = [
     text: "I think, therefore I am",
     avatar:
       "https://gravatar.com/avatar/908cbd77ad573643714bb69ffb3feef8?s=400&d=robohash&r=x",
+    hasReplies: true, // Added flag
     replies: [
       {
         username: "Rum_8",
@@ -56,6 +62,7 @@ const commentsData = [
         text: "you know nun",
         avatar:
           "https://gravatar.com/avatar/344181407873dafec140e5d32e1a16ee?s=400&d=robohash&r=x",
+        hasReplies: false, // No replies for this reply
       },
       {
         username: "master_of_none",
@@ -63,6 +70,7 @@ const commentsData = [
         text: "doobie doobie doo",
         avatar:
           "https://gravatar.com/avatar/f4b1887dff08b78dd7e5156b089bd86f?s=400&d=robohash&r=x",
+        hasReplies: true, // Added flag
         replies: [
           {
             username: "party_maker_228",
@@ -70,6 +78,7 @@ const commentsData = [
             text: "woobie wabi boo",
             avatar:
               "https://gravatar.com/avatar/49cbdd392cf72ee38ad0b8cef9d2d8d6?s=400&d=robohash&r=x",
+            hasReplies: false, // No replies for this reply
           },
           {
             username: "mrBoombastic",
@@ -77,6 +86,7 @@ const commentsData = [
             text: "hell yeaaaa",
             avatar:
               "https://robohash.org/278bd6cddfd4080d1ec905cb56a5b3f9?set=set4&bgset=&size=400x400",
+            hasReplies: false, // No replies for this reply
           },
         ],
       },
@@ -87,7 +97,7 @@ const commentsData = [
 
 const App = () => (
   <div className="app">
-    {commentsData.map((comment, index) => (
+    {comments.map((comment, index) => (
       <Comment key={index} {...comment} />
     ))}
 
