@@ -1,5 +1,6 @@
-import { useState } from "react";
 import "./CommentForm.css";
+import { useState } from "react";
+
 import ReCAPTCHA from "react-google-recaptcha";
 
 const CAPTCHA_SITE_KEY = import.meta.env.VITE_REACT_CAPTCHA_SITE_KEY;

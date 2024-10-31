@@ -1,6 +1,8 @@
 import "./Comment.css";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
+
+import CommentForm from "./CommentForm";
 
 const Comment = ({
   username,
@@ -14,6 +16,8 @@ const Comment = ({
   const [showReplies, setShowReplies] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetchedReplies, setFetchedReplies] = useState([]);
+  const [showCommentForm, setShowCommentForm] = useState(false);
+  const formRef = useRef(null);
 
   const toggleReplies = async () => {
     if (showReplies) {
@@ -37,6 +41,20 @@ const Comment = ({
     }
   };
 
+  const handleFormState = () => {
+    if (showCommentForm) {
+      setShowCommentForm(false);
+    } else {
+      setShowCommentForm(true);
+    }
+  };
+
+  const handleCommentSubmit = (newComment) => {
+    console.log("New comment submitted:", newComment);
+
+    setShowCommentForm(false);
+  };
+
   return (
     <div className="comment">
       <img src={avatar} alt="Avatar" className="avatar" />
@@ -52,13 +70,23 @@ const Comment = ({
         <div className="comment-actions">
           <span className="user-can-click">👍</span>
           <span className="user-can-click">👎</span>
-          <span className="user-can-click">💬</span>
+
+          <button className="leave-comment-btn" onClick={handleFormState}>
+            💬
+          </button>
+
           {hasReplies && (
             <button onClick={toggleReplies} className="show-replies-btn">
               {loading ? "Loading..." : showReplies ? "⬆️" : "⬇️"}
             </button>
           )}
         </div>
+
+        {showCommentForm === true && (
+          <div ref={formRef}>
+            <CommentForm onSubmit={handleCommentSubmit} />
+          </div>
+        )}
 
         {showReplies && (
           <div className="replies">
